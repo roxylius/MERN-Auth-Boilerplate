@@ -1,6 +1,9 @@
 {
   "name": "mern-auth-boilerplate",
   "module": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
