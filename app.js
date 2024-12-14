@@ -14,6 +14,7 @@ const getUserRouter = require('./views/getUser');
 const googleRouter = require('./views/google');
 const githubRouter = require('./views/github');
 const logoutRouter = require('./views/logout');
+const resetRouter = require('./views/reset');
 
 
 const app = express();
@@ -76,6 +77,7 @@ app.use('/api/user', getUserRouter);
 app.use('/api/auth/google', googleRouter);
 app.use('/api/auth/github', githubRouter);
 app.use('/api/logout', logoutRouter);
+app.use('/api/reset', resetRouter);
 
 //testing only 
 app.get('/', (req, res) => {
