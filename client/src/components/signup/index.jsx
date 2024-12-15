@@ -6,7 +6,7 @@ import './style.css'
 // import GoogleIcon from './assets/img/google.png';
 // import GithubIcon from './assets/img/github.png';
 
-import GoogleIcon from '../../assets/img/google.png';
+// import GoogleIcon from '../../assets/img/google.png';
 
 const Signup = () => {
     //assigns the useNavigate hook to navigate to navigate to different pages
@@ -56,8 +56,8 @@ const Signup = () => {
                         localStorage.setItem("email", email);
                     }
 
-                    //navigate to clipboard page after storing user data
-                    navigate('/clipboard');
+                    //navigate to home page after storing user data
+                    navigate('/home');
                 });
 
 
