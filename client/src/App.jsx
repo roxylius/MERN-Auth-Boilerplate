@@ -1,13 +1,13 @@
 import './App.css'
-import Signup from './components/signup'
+import { Routes, Route } from 'react-router-dom'
+import Signup from './components/signup/index'
 
 function App() {
-
   return (
-    <>
-    <Signup/>
-      <h1>Hello World</h1>
-    </>
+    <Routes>
+      <Route path="/" element={<Signup />} />
+      {/* <Route path="/another" element={<AnotherComponent />} /> Example additional route */}
+    </Routes>
   )
 }
 

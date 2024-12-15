@@ -1,16 +1,16 @@
 @font-face {
     font-family: 'Tan Aegean';
-    src: url(/client/src/assets/fonts/TAN\ -\ AEGEAN\ Regular.ttf);
+    src: url(../../assets/fonts/TAN_AEGEAN-Regular.ttf);
 }
 
 @font-face {
     font-family: "HelveticaNeue Medium";
-    src: url(../assets/fonts/HelveticaNeue\ Medium.ttf);
+    src: url(../../assets/fonts/HelveticaNeue-Medium.ttf);
 }
 
 @font-face {
     font-family: "HelveticaNeue Light";
-    src: url(../assets/fonts/HelveticaNeue\ Light.ttf);
+    src: url(../../assets/fonts/HelveticaNeue-Light.ttf);
 }
 
 h4,
@@ -40,7 +40,7 @@ p {
 }
 
 .img {
-    background-image: url(../assets/img/cat.jpeg);
+    background-image: url(../../assets/img/cat.jpeg);
     background-size: cover;
     width: 40%;
     height: 100%;

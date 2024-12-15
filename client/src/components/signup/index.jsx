@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import isOnline from 'is-online';
 
 //import local assets
 import './style.css'
-import Offline from "src/components/offline/index";
 // import GoogleIcon from './assets/img/google.png';
 // import GithubIcon from './assets/img/github.png';
 
-import GoogleIcon from 'src/assets/img/google.png';
+import GoogleIcon from '../../assets/img/google.png';
 
 const Signup = () => {
     //assigns the useNavigate hook to navigate to navigate to different pages
@@ -20,7 +18,7 @@ const Signup = () => {
     const [isLogin, setIsLogin] = useState(false);
 
     //stores server url
-    const serverURL = process.env.REACT_APP_SERVER_URL;
+    const serverURL = import.meta.env.VITE_SERVER_URL;
     // console.log(serverURL);
 
     //react state for form input values
@@ -35,28 +33,7 @@ const Signup = () => {
         statusCode: '',
         body: ''
     });
-
-    //stores internet status
-    const [ifOnline, setIfOnline] = useState(true);
-
-    //function handling internet status
-    const internetStatus = async () => {
-        const status = await isOnline();
-        setIfOnline(status);
-        console.log(status);
-    }
-
-    //function initially runs status then after 20sec it runs the function again
-    useEffect(() => {
-        internetStatus();
-
-        const IntervalId = setInterval(() => {
-            internetStatus();
-            console.log("interval run");
-        }, 6 * 1000); //6 seconds
-
-        return () => clearInterval(IntervalId);
-    });
+   
 
     //display the response from the server
     useEffect(() => {
@@ -211,7 +188,6 @@ const Signup = () => {
 
                 </div>
             </div >
-            {ifOnline ? null : <Offline />}
         </div >
     </>)
 }
