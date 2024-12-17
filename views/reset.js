@@ -6,13 +6,33 @@ const User = require('../schema/user')
 
 //import utility functions
 const cryptoHelper = require('../utils/cryptoHelper');
-const { generateResetPasswordEmail } = require('../utils/emailTemplate');
+const { generateResetPasswordEmail } = require('../utils/resetPassEmail');
 
 //handles password reset route
 const resetRouter = express.Router();
 
 resetRouter.get('/:token', async (req, res) => {
+    try {
+        // Access the token from the URL
+        const resetToken = req.params.token;
 
+        // Decrypt the token to get the reset data
+        const resetData = cryptoHelper.decryptData(resetToken);
+
+        // Find the user by email
+        const user = await User.findOne({ email: resetData.email });
+
+        // Check if the token has expired
+        if (Date.now() > resetData.expireOn) {
+            return res.status(400).send('Reset token has expired');
+        }
+
+        // If user is found and token is valid, proceed with password reset logic
+        res.status(200).json({message:'Token is valid. Proceed with password reset.',resetData});
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Invalid or expired token');
+    }
 })
 
 resetRouter.post('/forgot-password', async (req, res) => {
