@@ -3,7 +3,10 @@ const nodemailer = require('nodemailer');
 
 //user model
 const User = require('../schema/user')
+
+//import utility functions
 const cryptoHelper = require('../utils/cryptoHelper');
+const { generateResetPasswordEmail } = require('../utils/emailTemplate');
 
 //handles password reset route
 const resetRouter = express.Router();
@@ -34,6 +37,9 @@ resetRouter.post('/forgot-password', async (req, res) => {
 
         //encrypt resetData and get string output 
         const resetToken = cryptoHelper.encryptData(resetData);
+
+        //create reset link
+        const resetLink = `${process.env.SERVER_URL}/api/reset/${resetToken}`;
 
         // Send the reset token to the user's email
         const transporter = nodemailer.createTransport({
