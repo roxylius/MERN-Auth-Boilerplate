@@ -16,7 +16,6 @@ resetRouter.get('/:token', async (req, res) => {
 })
 
 resetRouter.post('/forgot-password', async (req, res) => {
-    console.log("in /forgot-password");
     try {
         //get user email from ui-client
         const { email } = req.body;
@@ -38,8 +37,18 @@ resetRouter.post('/forgot-password', async (req, res) => {
         //encrypt resetData and get string output 
         const resetToken = cryptoHelper.encryptData(resetData);
 
+        // Add the resetToken to the user model
+        user.resetToken = resetToken;
+        await user.save();
+
         //create reset link
         const resetLink = `${process.env.SERVER_URL}/api/reset/${resetToken}`;
+
+        // Generate the email content using the utility function
+        const htmlContent = generateResetPasswordEmail(resetLink, user.name);
+
+        //plain-text version of email for the those that doesn't support html
+        const textContent = `hello ${user.name}, your reset link is ${resetLink}`;
 
         // Send the reset token to the user's email
         const transporter = nodemailer.createTransport({
@@ -55,10 +64,11 @@ resetRouter.post('/forgot-password', async (req, res) => {
             from: process.env.NODEMAILER_EMAIL,
             to: email,
             subject: '[APPLICATION NAME] Please reset your password',
-            text: 'That was easy!'
+            text: textContent,
+            html: htmlContent
         });
 
-        res.json(info);
+        res.status(200).json(info);
 
     } catch (err) {
         res.status(500).json({err});
