@@ -8,18 +8,18 @@ const cryptoHelper = require('../utils/cryptoHelper');
 //handles password reset route
 const resetRouter = express.Router();
 
-resetRouter.put('/:token', async (req, res) => {
+resetRouter.get('/:token', async (req, res) => {
 
 })
 
 resetRouter.post('/forgot-password', async (req, res) => {
-
+    console.log("in /forgot-password");
     try {
         //get user email from ui-client
         const { email } = req.body;
 
         //find user by email in db
-        const user = await User.findOne({ mail: email });
+        const user = await User.findOne({ email });
 
         //if user not found, send error msg
         if (!user) {
@@ -48,14 +48,14 @@ resetRouter.post('/forgot-password', async (req, res) => {
         const info = await transporter.sendMail({
             from: process.env.NODEMAILER_EMAIL,
             to: email,
-            subject: 'Sending Email using Node.js',
+            subject: '[APPLICATION NAME] Please reset your password',
             text: 'That was easy!'
         });
 
         res.json(info);
 
     } catch (err) {
-
+        res.status(500).json({err});
     }
 
 })
