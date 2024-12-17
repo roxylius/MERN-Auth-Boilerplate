@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const server = express(); //var server uses all the express function
 const port = process.env.PORT || 3000; //port
 const DB = process.env.MONGODB_ATLAS;  //database link
+const cryptoHelper = require('./utils/cryptoHelper.js'); 
 
 //connect to mongo database
 mongoose.connect(DB)
@@ -21,3 +22,10 @@ server.use(app);
 
 //the server is started on the given port
 server.listen(port, () => console.log("The server is listening on port: ", port, '....'));
+
+var json = {"email":"abhi@gmail.com","expireOn":Date.now() + 4*60*60*1000};
+
+const encryptedData = cryptoHelper.encryptData(json);
+console.log({encryptedData});
+const decryptedData = cryptoHelper.decryptData(encryptedData);
+console.log({decryptedData});
