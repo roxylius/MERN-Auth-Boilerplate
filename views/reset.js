@@ -27,6 +27,11 @@ resetRouter.get('/:token', async (req, res) => {
             return res.status(400).send('Reset token has expired');
         }
 
+        //check if the password is already reset by check resetToken key in user
+        if ( resetToken !== user.resetToken )
+            return res.status(400).send("Can't reset password, it has already been reset\nGenerate new Reset Link..");
+
+
         // If user is found and token is valid, proceed with password reset logic
         res.status(200).json({message:'Token is valid. Proceed with password reset.',resetData});
     } catch (error) {
@@ -43,9 +48,11 @@ resetRouter.post('/forgot-password', async (req, res) => {
         //find user by email in db
         const user = await User.findOne({ email });
 
+        console.log({email,user})
+
         //if user not found, send error msg
         if (!user) {
-            return res.status(404).send({ message: "User not found!" });
+            return res.status(404).json({ message: "User not found!" });
         }
 
         //if user is present
@@ -88,10 +95,10 @@ resetRouter.post('/forgot-password', async (req, res) => {
             html: htmlContent
         });
 
-        res.status(200).json(info);
+        res.status(200).json({info,message:'Check your email to reset your password.'});
 
     } catch (err) {
-        res.status(500).json({err});
+        res.status(500).json({err,message:'Internal Server Error'});
     }
 
 })

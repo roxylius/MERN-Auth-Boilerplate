@@ -1,0 +1,24 @@
+.form-reset{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+}
+
+.reset-div{
+    padding: 0 1.1em;
+    display: flex;
+    flex-direction:column;
+}
+
+.reset-inp{
+    margin-left:0;
+    font-size: 1.1em;
+    width:80%;
+}
+
+.msg-box{
+    width: 60%;
+    color:rgb(194, 27, 60);
+    display:flex;
+    justify-content: center;
+}

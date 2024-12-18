@@ -20,7 +20,7 @@ const resetRouter = require('./views/reset');
 const app = express();
 
 //set up middleware
-app.use(cors({ origin: ['http://localhost:3001', 'http://localhost:4444', 'exp://192.168.239.205:19000', 'http://localhost:7501'], credentials: true, methods: ['GET', 'POST', 'DELETE'] })); //to enable cross origin resourse sharing ie make post,get,etc request form different url
+app.use(cors({ origin: ['http://localhost:5173'], credentials: true, methods: ['GET', 'POST', 'DELETE'] })); //to enable cross origin resourse sharing ie make post,get,etc request form different url
 app.use(bodyParser.urlencoded({ extended: true })); //to read the post request from html form
 app.use(express.json()); //to interpret json
 var store = new MongoDBStore( //setup to store the session in DB
