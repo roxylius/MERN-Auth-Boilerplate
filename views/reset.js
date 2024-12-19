@@ -13,7 +13,7 @@ const resetRouter = express.Router();
 
 resetRouter.get('/:token', async (req, res) => {
     try {
-        // Access the token from the URL
+        // Access the token from the URL is decoded
         const resetToken = req.params.token;
 
         // Decrypt the token to get the reset data
@@ -28,12 +28,21 @@ resetRouter.get('/:token', async (req, res) => {
         }
 
         //check if the password is already reset by check resetToken key in user
-        if ( resetToken !== user.resetToken )
+        //decode both as sometimes resetToken from param is auto decoded
+        if ( decodeURIComponent(resetToken) !== decodeURIComponent(user.resetToken) )
             return res.status(400).send("Can't reset password, it has already been reset\nGenerate new Reset Link..");
 
+        // Serve the password reset form
+        res.send(`
+            <form action="/api/reset/${resetToken}" method="POST">
+                <input type="password" name="password" placeholder="New Password" required />
+                <input type="password" name="confirmPassword" placeholder="Confirm New Password" required />
+                <button type="submit">Reset Password</button>
+            </form>
+        `);
 
         // If user is found and token is valid, proceed with password reset logic
-        res.status(200).json({message:'Token is valid. Proceed with password reset.',resetData});
+        // res.status(200).json({message:'Token is valid. Proceed with password reset.',resetData});
     } catch (error) {
         console.log(error);
         res.status(500).send('Invalid or expired token');
@@ -66,7 +75,7 @@ resetRouter.post('/forgot-password', async (req, res) => {
 
         // Add the resetToken to the user model
         user.resetToken = resetToken;
-        await user.save();
+        console.log(await user.save());
 
         //create reset link
         const resetLink = `${process.env.SERVER_URL}/api/reset/${resetToken}`;

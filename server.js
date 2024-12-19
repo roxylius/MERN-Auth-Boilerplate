@@ -22,3 +22,11 @@ server.use(app);
 
 //the server is started on the given port
 server.listen(port, () => console.log("The server is listening on port: ", port, '....'));
+
+const encrypt = cryptoHelper.encryptData({"email":"anandabhijeet786@gmail.com","expireOn":Date.now() + 2*60*60*1000});
+
+console.log({encrypt});
+
+const decrypt = cryptoHelper.decryptData(encrypt);
+
+console.log({decrypt});
