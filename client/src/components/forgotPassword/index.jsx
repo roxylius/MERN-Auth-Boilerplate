@@ -28,7 +28,7 @@ const forgotPassword = () => {
 
         setMsg(result.message ? result.message : 'Some error occured contact dev.' );
         setEmail('');
-        setTimeout(()=>{setMsg('')},5000); //reset msg after 5secs
+        setTimeout(()=>{setMsg('')},8000); //reset msg after 8secs
     }
 
     return (
