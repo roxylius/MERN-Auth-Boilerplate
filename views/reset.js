@@ -126,18 +126,21 @@ resetRouter.post('/:token', async (req, res) => {
             return res.status(400).send("Password must be at least 8 characters long.");
         }
 
+        console.log("resetUser");
         // Update the password using passport-local-mongoose
-        await user.setPassword(password);
+        const resetUser = await user.setPassword(password);
+        console.log({resetUser});
 
         // Clear the resetToken after successful password reset
         user.resetToken = undefined;
-        await user.save();
+        const tokenReset = await user.save();
+        console.log({tokenReset});
 
         res.status(200).send("Password has been successfully reset. Login in with new Password!");
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('An error occurred while resetting the password.');
+        res.status(500).send('An error occurred while resetting the password. Try again....');
     }
 });
 

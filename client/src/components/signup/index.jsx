@@ -28,12 +28,6 @@ const Signup = () => {
         password: ''
     });
 
-    //stores the response from the server
-    const [response, setResponse] = useState({
-        statusCode: '',
-        body: ''
-    });
-
     //handle change when there is an input
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -118,12 +112,13 @@ const Signup = () => {
                                 <button className="btns" type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
 
                                 {isLogin ? <>
-                                    <p className="login-text">Don't have an account? <a href="/#/" onClick={handleSignup}>Signup</a></p></>
-                                    :
-                                    <><p className="login-text">Already have an account? <a href="/#/" onClick={handleLogin}>Login</a></p>
+                                    <p className="login-text">Don't have an account? <a href="/#/" onClick={handleSignup}>Signup</a></p>
+                                    <p className="login-text forgot-pass"><a href="/forgot-password">Forgot Password?</a></p>
+                                </>
+                                    : <>
+                                        <p className="login-text">Already have an account? <a href="/#/" onClick={handleLogin}>Login</a></p>
                                     </>
                                 }
-                                {response.statusCode === 401 ? <p className="error">{response.body}</p> : null}
                             </div>
                         </form>
                     </div>
