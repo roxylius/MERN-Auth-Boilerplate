@@ -33,55 +33,6 @@ const Signup = () => {
         statusCode: '',
         body: ''
     });
-   
-
-    //display the response from the server
-    useEffect(() => {
-        console.log(response);
-        if (response.statusCode === 200) {
-            fetch(serverURL + '/api/user', {
-                method: 'GET',
-                credentials: 'include' //imp
-            })
-                .then(response => response.json())
-                .then(async data => {
-                    console.log("This is data: ", data);
-                    const { name, _id, email } = data;
-
-                    //stores user data in local storage
-                    if (localStorage.getItem('name') == null) {
-                        console.log("localStorage is empty");
-                        localStorage.setItem("name", name);
-                        localStorage.setItem("id", _id);
-                        localStorage.setItem("email", email);
-                    }
-
-                    //navigate to home page after storing user data
-                    navigate('/home');
-                });
-
-
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate, response]);
-
-
-    //checks if the user is already logged in
-    // const userURL = serverURL + '/api/user';
-
-    // //fetches the server and waits for response
-    // fetch(userURL, {
-    //     method: 'GET',
-    //     credentials: 'include' //imp
-    // }).then(response => {
-    //     if (response.status === 200) {
-    //         navigate('/clipboard');
-    //     } else {
-    //         navigate('/');
-    //     }
-    // });
-
 
     //handle change when there is an input
     const handleChange = (e) => {
@@ -90,7 +41,7 @@ const Signup = () => {
     }
 
     //handles when the submit button is clicked
-    const handleForm = (event) => {
+    const handleForm = async (event) => {
         //prevents the form from reloading
         event.preventDefault();
         console.log("i have been clicked");
@@ -100,24 +51,27 @@ const Signup = () => {
         const postURL = serverURL + '/api/' + url;
 
         //posts the data to the server and intercept the response
-        fetch(postURL, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            //take the response and sets the value of status code
-            .then(response => {
-                setResponse(prevVal => ({ ...prevVal, statusCode: response.status }));
-                return response.json();
+        try {
+            const response = await fetch(postURL, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             })
-            //takes the data from the response.json() stores in response state //also this is not .then from fetch but of then(response) fn
-            .then(data => {
-                setResponse(prevVal => ({ ...prevVal, body: data.message }));
-            })
-            .catch(error => console.error(error));
+
+            if (response.ok) {
+                const body = await response.json();
+                localStorage.setItem('user', JSON.stringify(body.user));
+                navigate('/home');
+            } else {
+                const data = await response.json();
+                alert(data.message || 'Login failed');
+            }
+        } catch (error) {
+            console.log("An Error occured: ", error);
+        }
     }
 
     //handle Login click

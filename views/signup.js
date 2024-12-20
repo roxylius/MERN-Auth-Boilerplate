@@ -28,11 +28,13 @@ SignupRouter.post("/", async (req, res) => {
         //registers the user using passport-local-mongoose fn
         User.register(newUser, password, (err, user) => {
             //if any error in registering otherwise authenticate the user
-            if (err) { res.status(401).json(err); console.log(err) }
-            else {
+            if (err) { 
+                res.status(401).json({error:err,message:"Error in registering User"});
+                console.log(err);
+            } else {
                 //authenticates the user based on local strategy and sends the session with the response
                 passport.authenticate('local')(req, res, () => {
-                    res.status(200).json({ message: 'User Authenticated!' });
+                    res.status(200).json({ message: 'User Authenticated!',user });
                 });
             }
         });

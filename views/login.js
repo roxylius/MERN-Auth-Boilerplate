@@ -43,8 +43,7 @@ loginRouter.post('/', (req, res, next) => {
             user: {
               id: foundUser._id,
               email: foundUser.email,
-              name: foundUser.name,
-              role: foundUser.role,
+              name: foundUser.name
             },
           });
         } catch (error) {

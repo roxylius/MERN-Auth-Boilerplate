@@ -4,20 +4,20 @@
  * @returns {string} - The HTML string for the reset password form.
  */
 function generateResetForm(resetToken) {
-  return `
+    return `
   <!doctype html>
   <html lang="en">
   <head>
       <meta charset="UTF-8">
       <title>Reset Password</title>
       <style>
-          @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
           * {
               margin: 0;
               padding: 0;
               box-sizing: border-box;
-              font-family: 'Quicksand', sans-serif;
+              font-family: 'Roboto Mono', sans-serif;
           }
 
           body {
@@ -79,6 +79,7 @@ function generateResetForm(resetToken) {
           section .reset-pass .content .form .inputBox {
               position: relative;
               width: 100%;
+              margin-bottom: 1.1em;
           }
 
           section .reset-pass .content .form .inputBox input {
@@ -133,7 +134,7 @@ function generateResetForm(resetToken) {
               <div class="content">
                   <h2>Reset Password</h2>
                   <div class="form">
-                      <form action="/api/reset/${resetToken}" method="POST">
+                      <form action="/api/reset/${resetToken}" method="POST" onsubmit="return validateForm()">
                           <div class="inputBox">
                               <input type="password" name="password" required> <i>Password</i>
                           </div>
@@ -148,8 +149,22 @@ function generateResetForm(resetToken) {
               </div>
           </div>
       </section>
+    <script>
+        function validateForm() {
+            const password = document.forms[0]["password"].value;
+            const confirmPassword = document.forms[0]["confirmPassword"].value;
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters long.");
+                return false;
+            }
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }
+            return true;
+        }
+    </script>
   </body>
-
   </html>
   `;
 }
